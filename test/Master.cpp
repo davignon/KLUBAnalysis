@@ -28,6 +28,7 @@
 #include "TArrayF.h"
 #include "TStyle.h"
 #include "UserSample.h"
+//#include "Sample.h"
 
 #define Dummy           true
 
@@ -42,9 +43,13 @@ void DummyFunction()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, const char* argv[])
 {
+  // Sample* W = new Sample();
+  // W->InitializeTree();
+  
   UserSample* W = new UserSample();
   W->InitializeTree();
-  
+  cout<<W->SampleChain->GetEntries()<<endl;
+
   return 0;
 }
 
