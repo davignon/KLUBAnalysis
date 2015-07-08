@@ -43,7 +43,8 @@ SONAME	 =  libMaster.so
 SONAME2  =  Master
 SOFLAGS  =  -Wl,-soname,$(SONAME)
 
-GLIBS   =  -lm -ldl -rdynamic $(ROOTGLIBS) -lGenVector -lFoam -lMinuit -lTMVA -lMLP -lXMLIO -lGpad  -lTreePlayer -lRooFit -lRooFitCore -lRooStats
+GLIBS   =  -lm -ldl -rdynamic $(ROOTGLIBS) -lGenVector -lFoam -lMinuit -lTMVA -lMLP -lXMLIO -lGpad  -lTreePlayer
+#GLIBS   =  -lm -ldl -rdynamic $(ROOTGLIBS) -lGenVector -lFoam -lMinuit -lTMVA -lMLP -lXMLIO -lGpad  -lTreePlayer -lRooFit -lRooFitCore -lRooStats
 
 
 #################################################
