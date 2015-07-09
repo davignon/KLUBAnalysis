@@ -28,9 +28,10 @@
 #include "TArrayF.h"
 #include "TStyle.h"
 #include "UserSample.h"
-//#include "Sample.h"
+#include "W.h"
+#include "VBF.h"
 
-#define Dummy           true
+#define Dummy true
 
 using namespace std;
 
@@ -43,12 +44,31 @@ void DummyFunction()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, const char* argv[])
 {
-  // Sample* W = new Sample();
-  // W->InitializeTree();
   
-  UserSample* W = new UserSample();
-  W->InitializeTree();
-  cout<<W->SampleChain->GetEntries()<<endl;
+  
+  
+  //Dealing with W
+  W* W_ = new W();
+  W_->InitializeTree(kTRUE, "W","/data_CMS/cms/davignon/Ntuples_RunII/VBFH125/Ntuples_TruthInfo/HTauTauAnalysis_*.root");
+  TH1F* hW = W_->ReturnShape("hW","pt_1","");
+  Double_t normW = W_->ReturnNormalization("");
+
+  //Dealing with VBF
+  VBF* VBF_ = new VBF();
+  VBF_->InitializeTree(kTRUE, "VBF","/data_CMS/cms/davignon/Ntuples_RunII/VBFH125/Ntuples_TruthInfo/HTauTauAnalysis_*.root");
+  TH1F* hVBF = VBF_->ReturnShape("hVBF","pt_1","");
+  Double_t normVBF = VBF_->ReturnNormalization("");
+
+  TH1F* hVBF_ptCut = VBF_->ReturnShape("hVBF_ptCut","pt_1","pt_1>50.");
+  Double_t normVBF_ptCut = VBF_->ReturnNormalization("pt_1>50.");
+
+  TFile OutputHistograms("myHistograms.root","RECREATE");
+  hW->Write();
+  hVBF->Write();
+  hVBF_ptCut->Write();
+
+  // TCanvas c1("c1","c1",800.,800.);
+  // c1.SaveAs("test.pdf");
 
   return 0;
 }
