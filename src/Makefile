@@ -32,7 +32,7 @@ ARCHL = -m64
 CXX  =  g++
 CXXFLAGS  =  -Wall -O -fPIC -I$(HDR) $(ROOTCFLAGS) 
 CPP  =  g++
-CPPFLAGS  = -Wall -O -fPIC  $(ARCHL) -I$(HDR) $(ROOTCFLAGS) 
+CPPFLAGS  = -Wall  $(ARCHL) -I$(HDR) $(ROOTCFLAGS) 
 
 F    = gfortran
 FFLAGS = -c
@@ -43,8 +43,7 @@ SONAME	 =  libMaster.so
 SONAME2  =  Master
 SOFLAGS  =  -Wl,-soname,$(SONAME)
 
-GLIBS   =  -lm -ldl -rdynamic $(ROOTGLIBS) -lGenVector -lFoam -lMinuit -lTMVA -lMLP -lXMLIO -lGpad  -lTreePlayer
-#GLIBS   =  -lm -ldl -rdynamic $(ROOTGLIBS) -lGenVector -lFoam -lMinuit -lTMVA -lMLP -lXMLIO -lGpad  -lTreePlayer -lRooFit -lRooFitCore -lRooStats
+GLIBS   =  -lm -ldl -rdynamic $(ROOTGLIBS) -lGenVector -lFoam -lMinuit -lTMVA -lMLP -lXMLIO -lGpad  -lTreePlayer -lRooFit -lRooFitCore -lRooStats
 
 
 #################################################
