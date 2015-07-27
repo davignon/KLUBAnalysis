@@ -3,7 +3,6 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-#include <Sample.h>
 #include "vector"
 #include "UserSample.h"
 

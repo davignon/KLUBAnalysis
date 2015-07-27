@@ -8,16 +8,25 @@
 
 using namespace std;
 
-void UserSample::InitializeTree(Bool_t CreateAnalysisTree = kTRUE, TString Name = "W", TString LocationOfFiles = "/data_CMS/cms/davignon/Ntuples_RunII/VBFH125/Ntuples_TruthInfo/HTauTauAnalysis_*.root")
+void UserSample::InitializeTree(Bool_t CreateAnalysisTree = kTRUE, TString Name = "W", TString LocationOfFiles = "/data_CMS/cms/davignon/Ntuples_RunII/VBFH125/Ntuples_TruthInfo/HTauTauAnalysis_*.root", float XS = 1.0, float FilterEfficiency = 1.0, float GeneratedEvents = 1.0)
 {
   m_SampleName = Name;
-  
+  m_XS = XS;
+  m_FilterEfficiency = FilterEfficiency;
+  m_GeneratedEvents = GeneratedEvents;
+
   TChain* temp = new TChain("HTauTauTree/HTauTauTree");
   m_SampleChain = (TChain*)temp->Clone();
 
   AddFilesToTree(LocationOfFiles.Data());
 
-  if(CreateAnalysisTree) ProduceAnalysisFlatTree(Name+".root");
+  m_AnalysisFlatTreeFileName = "flatNtuples/";
+  m_AnalysisFlatTreeFileName += Name ;
+  m_AnalysisFlatTreeFileName += ".root" ;
+
+  m_AnalysisFlatTreeName = "SyncTree";
+
+  if(CreateAnalysisTree) ProduceAnalysisFlatTree(Name);
  
   return ;
 }
@@ -232,12 +241,8 @@ void UserSample::ProduceAnalysisFlatTree(TString FileName = "dummy.root")
   m_SampleChain->SetBranchAddress("bDiscriminator", &bDiscriminator);
   m_SampleChain->SetBranchAddress("bCSVscore", &bCSVscore);
   m_SampleChain->SetBranchAddress("PFjetID",&PFjetID);
-  
-  m_AnalysisFlatTreeFileName = "flatNtuples/";
-  m_AnalysisFlatTreeFileName += FileName ;
 
   TFile f_SyncTree(m_AnalysisFlatTreeFileName.Data(),"RECREATE");
-  m_AnalysisFlatTreeName = "SyncTree";
 
   TTree *SyncTree = new TTree(m_AnalysisFlatTreeName.Data(),m_AnalysisFlatTreeName.Data());
 
@@ -1208,7 +1213,7 @@ TH1F* UserSample::ReturnShape(TString HistoName = "hW", TString Variable = "pt_1
   return hShape;
 }
 
-Double_t UserSample::ReturnNormalization(TString Cuts = "")
+Double_t UserSample::ReturnNormalization(TString Cuts = "", float LumiScale = 1.0)
 {
   cout<<"Get normalization of "<<m_SampleName<<" sample, with cuts "<<Cuts<<endl;
   TH1F* hNorm = new TH1F("hNorm","hNorm",100,0.,500.);
@@ -1220,9 +1225,9 @@ Double_t UserSample::ReturnNormalization(TString Cuts = "")
   DrawCommand += ">>hNorm";
   AnalysisTree.Draw(DrawCommand.Data(),Cuts.Data());
   
-  cout<<"   = "<<hNorm->Integral()<<endl;
   
-  m_Yield = hNorm->Integral();
-  
-  return hNorm->Integral();
+  m_Yield = hNorm->Integral()*LumiScale/(m_GeneratedEvents/(m_XS*m_FilterEfficiency));
+  cout<<"   = "<<m_Yield<<endl;
+    
+  return m_Yield;
 }
