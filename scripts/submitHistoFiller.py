@@ -45,7 +45,8 @@ for nj in range(0, args.njobs):
     scriptFile.close()
     
     os.system ('chmod u+rwx ' + outDir + '/' + scriptName)
-    launchcommand = ('/opt/exp_soft/cms/t3/t3submit -short \'' + outDir + '/' + scriptName +"\'")
+    launchcommand = ('source ' + outDir + '/' + scriptName)
+    #launchcommand = ('/opt/exp_soft/cms/t3/t3submit -short \'' + outDir + '/' + scriptName +"\'")
     print launchcommand
     os.system (launchcommand)
     # command = '/opt/exp_soft/cms/t3/t3submit -short ' + outDir + '/' + proto + str (nj) + '.sh'
